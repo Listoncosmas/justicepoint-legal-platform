@@ -59,4 +59,4 @@ jobs:
       - name: Run PHPUnit
         env:
           JP_TEST_ROOT: /tmp/justicepoint-wp
-        run: wp-content/plugins/liston-legal-webops-core/vendor/bin/phpunit --configuration wp-content/plugins/liston-legal-webops-core/phpunit.xml.dist
+        run: /tmp/justicepoint-wp/wp-content/plugins/liston-legal-webops-core/vendor/bin/phpunit --configuration /tmp/justicepoint-wp/wp-content/plugins/liston-legal-webops-core/phpunit.xml.dist
