@@ -1,0 +1,28 @@
+{
+  "key": "group_jp_attorney",
+  "title": "JusticePoint Attorney Details",
+  "fields": [
+    {"key":"field_jp_attorney_fictional_name","label":"Fictional name","name":"fictional_name","type":"text"},
+    {"key":"field_jp_attorney_position","label":"Position","name":"position","type":"text"},
+    {"key":"field_jp_attorney_biography","label":"Biography","name":"biography","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_attorney_practice_areas","label":"Practice areas","name":"practice_areas","type":"relationship","post_type":["practice_area"],"return_format":"id"},
+    {"key":"field_jp_attorney_offices","label":"Offices","name":"offices","type":"relationship","post_type":["office"],"return_format":"id"},
+    {"key":"field_jp_attorney_education","label":"Education","name":"education","type":"textarea"},
+    {"key":"field_jp_attorney_admissions","label":"Admissions","name":"admissions","type":"textarea"},
+    {"key":"field_jp_attorney_professional_image","label":"Professional image","name":"professional_image","type":"image","return_format":"id"},
+    {"key":"field_jp_attorney_contact_email","label":"Contact email","name":"contact_email","type":"email"},
+    {"key":"field_jp_attorney_contact_phone","label":"Contact telephone","name":"contact_phone","type":"text"},
+    {"key":"field_jp_attorney_seo_title","label":"SEO title override","name":"seo_title","type":"text"},
+    {"key":"field_jp_attorney_meta_description","label":"Meta description","name":"meta_description","type":"textarea"},
+    {"key":"field_jp_attorney_canonical_override","label":"Canonical override","name":"canonical_override","type":"url"},
+    {"key":"field_jp_attorney_indexation","label":"Indexation","name":"indexation","type":"select","choices":{"index":"Index","noindex":"Noindex"},"default_value":"index"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"attorney"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "seamless",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1787616000
+}
+

@@ -1,0 +1,8 @@
+source,destination,status
+/legacy-a/,/legacy-b/,301
+/legacy-b/,/legacy-c/,301
+/legacy-c/,/legacy-a/,301
+/duplicate/,/target-one/,301
+/duplicate/,/target-two/,301
+/missing/,,301
+

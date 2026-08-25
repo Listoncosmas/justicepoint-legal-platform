@@ -1,0 +1,30 @@
+{
+  "key": "group_jp_office",
+  "title": "JusticePoint Office Details",
+  "fields": [
+    {"key":"field_jp_office_address","label":"Street address","name":"address","type":"text"},
+    {"key":"field_jp_office_office_city","label":"City","name":"office_city","type":"text"},
+    {"key":"field_jp_office_office_state","label":"State","name":"office_state","type":"text"},
+    {"key":"field_jp_office_zip_code","label":"ZIP code","name":"zip_code","type":"text"},
+    {"key":"field_jp_office_latitude","label":"Latitude","name":"latitude","type":"number"},
+    {"key":"field_jp_office_longitude","label":"Longitude","name":"longitude","type":"number"},
+    {"key":"field_jp_office_telephone","label":"Telephone number","name":"telephone","type":"text"},
+    {"key":"field_jp_office_office_hours","label":"Office hours","name":"office_hours","type":"textarea"},
+    {"key":"field_jp_office_consultation_url","label":"Consultation URL","name":"consultation_url","type":"url"},
+    {"key":"field_jp_office_served_practice_areas","label":"Served practice areas","name":"served_practice_areas","type":"relationship","post_type":["practice_area"],"return_format":"id"},
+    {"key":"field_jp_office_map_information","label":"Transit and access information","name":"map_information","type":"textarea"},
+    {"key":"field_jp_office_local_business_name","label":"LocalBusiness name","name":"local_business_name","type":"text"},
+    {"key":"field_jp_office_seo_title","label":"SEO title override","name":"seo_title","type":"text"},
+    {"key":"field_jp_office_meta_description","label":"Meta description","name":"meta_description","type":"textarea"},
+    {"key":"field_jp_office_canonical_override","label":"Canonical override","name":"canonical_override","type":"url"},
+    {"key":"field_jp_office_indexation","label":"Indexation","name":"indexation","type":"select","choices":{"index":"Index","noindex":"Noindex"},"default_value":"index"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"office"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "seamless",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1787616000
+}
+

@@ -1,0 +1,62 @@
+name: JusticePoint CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer, wp-cli
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            wp-content/plugins/liston-legal-webops-core/package-lock.json
+            wp-content/themes/the7-justicepoint-child/package-lock.json
+      - name: Install PHP dependencies
+        run: composer install --working-dir=wp-content/plugins/liston-legal-webops-core --no-interaction --prefer-dist
+      - name: Install frontend dependencies
+        run: |
+          npm ci --prefix wp-content/plugins/liston-legal-webops-core
+          npm ci --prefix wp-content/themes/the7-justicepoint-child
+      - name: Build production assets
+        run: npm run build
+      - name: Lint PHP, JavaScript, and CSS
+        run: |
+          composer lint --working-dir=wp-content/plugins/liston-legal-webops-core
+          npm run lint
+          npm run format:check
+      - name: Prepare isolated WordPress
+        run: |
+          mkdir -p /tmp/justicepoint-wp
+          wp core download --path=/tmp/justicepoint-wp --force
+          wp config create --path=/tmp/justicepoint-wp --dbname=wordpress --dbuser=root --dbpass=root --dbhost=127.0.0.1 --skip-check
+          wp core install --path=/tmp/justicepoint-wp --url=http://localhost --title=JusticePoint --admin_user=admin --admin_password=ci-only-password --admin_email=ci@example.test --skip-email
+          cp -R wp-content/plugins/liston-legal-webops-core /tmp/justicepoint-wp/wp-content/plugins/
+          wp plugin activate liston-legal-webops-core --path=/tmp/justicepoint-wp
+      - name: Run PHPUnit
+        env:
+          JP_TEST_ROOT: /tmp/justicepoint-wp
+        run: wp-content/plugins/liston-legal-webops-core/vendor/bin/phpunit --configuration wp-content/plugins/liston-legal-webops-core/phpunit.xml.dist

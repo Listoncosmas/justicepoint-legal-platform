@@ -1,0 +1,26 @@
+{
+  "key": "group_jp_service_area",
+  "title": "JusticePoint Service Area Details",
+  "fields": [
+    {"key":"field_jp_service_area_practice_area","label":"Practice area","name":"practice_area","type":"post_object","post_type":["practice_area"],"return_format":"id","required":1},
+    {"key":"field_jp_service_area_office","label":"Office / market","name":"office","type":"post_object","post_type":["office"],"return_format":"id","required":1},
+    {"key":"field_jp_service_area_unique_local_intro","label":"Unique local introduction","name":"unique_local_intro","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_service_area_local_legal_considerations","label":"Local legal considerations","name":"local_legal_considerations","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_service_area_nearby_areas","label":"Nearby areas served","name":"nearby_areas","type":"textarea"},
+    {"key":"field_jp_service_area_related_faqs","label":"Related FAQs","name":"related_faqs","type":"relationship","post_type":["faq"],"return_format":"id"},
+    {"key":"field_jp_service_area_assigned_attorneys","label":"Assigned attorneys","name":"assigned_attorneys","type":"relationship","post_type":["attorney"],"return_format":"id"},
+    {"key":"field_jp_service_area_crm_campaign_id","label":"CRM campaign ID","name":"crm_campaign_id","type":"text"},
+    {"key":"field_jp_service_area_seo_title","label":"SEO title override","name":"seo_title","type":"text"},
+    {"key":"field_jp_service_area_meta_description","label":"Meta description","name":"meta_description","type":"textarea"},
+    {"key":"field_jp_service_area_canonical_override","label":"Canonical override","name":"canonical_override","type":"url"},
+    {"key":"field_jp_service_area_indexation","label":"Indexation","name":"indexation","type":"select","choices":{"index":"Index","noindex":"Noindex"},"default_value":"index"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"service_area"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "seamless",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1787616000
+}
+

@@ -1,0 +1,24 @@
+{
+  "version": "0.4",
+  "title": "JusticePoint — Office Directory",
+  "type": "page",
+  "content": [
+    {
+      "id": "jpdirectory1",
+      "elType": "container",
+      "isInner": false,
+      "settings": {"content_width":"boxed","html_tag":"section"},
+      "elements": [
+        {
+          "id": "jpmapwidget1",
+          "elType": "widget",
+          "widgetType": "jp-office-directory",
+          "settings": {"per_page":12,"intro":"Filter by city, state, or practice area. Every map location is also available in the office list."},
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "page_settings": {}
+}
+

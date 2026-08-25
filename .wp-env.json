@@ -1,0 +1,14 @@
+{
+  "phpVersion": "8.2",
+  "plugins": ["./wp-content/plugins/liston-legal-webops-core"],
+  "themes": ["./wp-content/themes/the7-justicepoint-child"],
+  "config": {
+    "WP_DEBUG": true,
+    "WP_DEBUG_LOG": true,
+    "WP_ENVIRONMENT_TYPE": "local"
+  },
+  "mappings": {
+    "wp-content/themes/dt-the7": "./wp-content/themes/dt-the7"
+  }
+}
+

@@ -1,0 +1,203 @@
+.jp-related-practices {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--jp-line, #d7d0c7);
+}
+.jp-related-practices article {
+  padding: 27px 28px 27px 0;
+  border-right: 1px solid var(--jp-line, #d7d0c7);
+  border-bottom: 1px solid var(--jp-line, #d7d0c7);
+}
+.jp-related-practices article:last-child {
+  border-right: 0;
+}
+.jp-related-practices h3 a {
+  text-decoration: none;
+}
+.jp-related-practices article > p:not(.jp-eyebrow) {
+  color: var(--jp-muted, #66615c);
+  font-size: 0.88rem;
+}
+.jp-related-practices--list {
+  grid-template-columns: 1fr;
+}
+.jp-related-practices--list article {
+  border-right: 0;
+}
+.jp-directory-intro {
+  max-width: 760px;
+  color: var(--jp-muted, #66615c);
+}
+.jp-directory__filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto auto;
+  align-items: end;
+  gap: 14px;
+  padding: 24px;
+  background: var(--jp-warm, #f5f2ed);
+  border-top: 3px solid var(--jp-burgundy, #8f1d35);
+}
+.jp-directory__filters .jp-field {
+  margin: 0;
+}
+.jp-directory__reset {
+  align-self: center;
+  color: var(--jp-burgundy-dark, #6f1428);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+.jp-directory__status {
+  margin: 22px 0 15px;
+  color: var(--jp-muted, #66615c);
+  font-size: 0.82rem;
+}
+.jp-directory__layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1.1fr);
+  min-height: 640px;
+  border: 1px solid var(--jp-line, #d7d0c7);
+}
+.jp-directory__map {
+  position: sticky;
+  top: 95px;
+  height: 640px;
+  background: #e9e6df;
+  border-right: 1px solid var(--jp-line, #d7d0c7);
+}
+.jp-directory__list {
+  align-self: start;
+}
+.jp-office-row {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 26px;
+  border-bottom: 1px solid var(--jp-line, #d7d0c7);
+  background: #fff;
+}
+.jp-office-row:last-child {
+  border-bottom: 0;
+}
+.jp-office-row:hover {
+  background: #faf8f5;
+}
+.jp-office-row__index::before {
+  content: counter(jp-offices, decimal-leading-zero);
+  color: var(--jp-burgundy, #8f1d35);
+  font-family: Georgia, serif;
+}
+.jp-directory__list {
+  counter-reset: jp-offices;
+}
+.jp-office-row {
+  counter-increment: jp-offices;
+}
+.jp-office-row h2 {
+  margin: 0 0 8px;
+  font-size: 1.45rem;
+}
+.jp-office-row h2 a {
+  text-decoration: none;
+}
+.jp-office-row address {
+  color: var(--jp-muted, #66615c);
+  font-size: 0.77rem;
+  line-height: 1.5;
+}
+.jp-office-row__actions {
+  display: grid;
+  justify-items: end;
+  gap: 11px;
+}
+.jp-empty {
+  padding: 50px 30px;
+  text-align: center;
+}
+.jp-notice {
+  padding: 14px 16px;
+  border-left: 4px solid var(--jp-teal, #146b63);
+  background: var(--jp-warm, #f5f2ed);
+}
+.jp-notice--error {
+  border-left-color: var(--jp-burgundy, #8f1d35);
+}
+.maplibregl-popup-content {
+  padding: 12px 15px !important;
+  border-radius: 0 !important;
+  color: #242322;
+  font:
+    700 13px/1.4 Inter,
+    sans-serif;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 14%) !important;
+}
+.maplibregl-ctrl-group {
+  border-radius: 0 !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 12%) !important;
+}
+.jp-map-marker {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--jp-burgundy, #8f1d35);
+  color: #fff;
+  box-shadow: 0 3px 12px rgb(0 0 0 / 22%);
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+@media (max-width: 980px) {
+  .jp-directory__filters {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .jp-directory__filters .jp-button {
+    grid-column: 1 / 3;
+  }
+  .jp-directory__layout {
+    grid-template-columns: 1fr;
+  }
+  .jp-directory__map {
+    position: relative;
+    top: auto;
+    height: 390px;
+    border-right: 0;
+    border-bottom: 1px solid var(--jp-line, #d7d0c7);
+  }
+}
+@media (max-width: 640px) {
+  .jp-related-practices {
+    grid-template-columns: 1fr;
+  }
+  .jp-related-practices article {
+    padding-right: 0;
+    border-right: 0;
+  }
+  .jp-directory__filters {
+    grid-template-columns: 1fr;
+    padding: 19px 15px;
+  }
+  .jp-directory__filters .jp-button {
+    grid-column: auto;
+  }
+  .jp-directory__layout {
+    min-height: 0;
+    margin-inline: -15px;
+    border-right: 0;
+    border-left: 0;
+  }
+  .jp-directory__map {
+    height: 315px;
+  }
+  .jp-office-row {
+    grid-template-columns: 28px 1fr;
+    align-items: start;
+    padding: 22px 15px;
+  }
+  .jp-office-row__actions {
+    grid-column: 2;
+    justify-items: start;
+  }
+}

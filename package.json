@@ -1,0 +1,14 @@
+{
+  "name": "justicepoint-legal-platform",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup": "bash tools/setup.sh",
+    "build": "npm run build --prefix wp-content/plugins/liston-legal-webops-core && npm run build --prefix wp-content/themes/the7-justicepoint-child",
+    "lint": "npm run lint:js --prefix wp-content/plugins/liston-legal-webops-core && npm run lint:css --prefix wp-content/plugins/liston-legal-webops-core && npm run lint:js --prefix wp-content/themes/the7-justicepoint-child && npm run lint:css --prefix wp-content/themes/the7-justicepoint-child",
+    "format:check": "npm run format:check --prefix wp-content/plugins/liston-legal-webops-core && npm run format:check --prefix wp-content/themes/the7-justicepoint-child",
+    "test": "composer test --working-dir=wp-content/plugins/liston-legal-webops-core",
+    "env:start": "npx --yes @wordpress/env start",
+    "env:stop": "npx --yes @wordpress/env stop"
+  }
+}

@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+get_header();
+$services = get_posts(['post_type' => 'service_area', 'post_status' => 'publish', 'posts_per_page' => 3, 'orderby' => 'menu_order title', 'order' => 'ASC']);
+$offices = get_posts(['post_type' => 'office', 'post_status' => 'publish', 'posts_per_page' => 4, 'orderby' => 'menu_order title', 'order' => 'ASC']);
+?>
+<main id="main-content">
+    <section class="jp-hero">
+        <img class="jp-hero__image" src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/justicepoint-hero.webp'); ?>" srcset="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/justicepoint-hero-mobile.webp'); ?> 900w, <?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/justicepoint-hero.webp'); ?> 1897w" sizes="100vw" width="1897" height="829" alt="" fetchpriority="high" decoding="async">
+        <div class="jp-hero__veil" aria-hidden="true"></div>
+        <div class="jp-container jp-hero__inner">
+            <div class="jp-hero__copy"><p class="jp-eyebrow">Employment law for people and workplaces</p><h1>Clarity when work gets complicated.</h1><p class="jp-hero__lede">Thoughtful counsel for employees and employers across Southern California—designed around direct answers, local context, and a practical path forward.</p><div class="jp-hero__actions"><a class="jp-button jp-button--primary" href="<?php echo esc_url(home_url('/consultation/')); ?>">Request a consultation <span aria-hidden="true">→</span></a><a class="jp-button jp-button--ghost" href="<?php echo esc_url(get_post_type_archive_link('practice_area')); ?>">Explore practice areas</a></div><p class="jp-hero__note"><span aria-hidden="true">●</span> Fictional demonstration. No attorney-client relationship is created.</p></div>
+        </div>
+    </section>
+    <div class="jp-proof"><div class="jp-container"><div><span class="jp-proof__mark" aria-hidden="true">01</span><p><strong>Individual representation</strong><span>Clear guidance through workplace disputes.</span></p></div><div><span class="jp-proof__mark" aria-hidden="true">02</span><p><strong>Employer counsel</strong><span>Proactive advice for stronger workplaces.</span></p></div><div><span class="jp-proof__mark" aria-hidden="true">03</span><p><strong>Four local offices</strong><span>Connected counsel with market context.</span></p></div></div></div>
+
+    <section class="jp-section jp-container jp-section--practices" aria-labelledby="jp-practices-heading">
+        <div class="jp-section-heading jp-section-heading--split"><div><p class="jp-eyebrow">Ways we can help</p><h2 id="jp-practices-heading">Experience organized around the issue—not the template.</h2></div><p>Each page combines shared legal-service information with market-specific guidance. Editors manage the source once; the platform handles the presentation everywhere.</p></div>
+        <?php jp_render_practices(); ?>
+    </section>
+
+    <section class="jp-insight jp-section"><div class="jp-container jp-insight__grid"><div class="jp-insight__visual"><img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/justicepoint-maya-chen.webp'); ?>" width="900" height="1125" alt="Maya Chen, a fictional JusticePoint employment attorney" loading="lazy"><div class="jp-insight__caption"><span>01</span><p>Listen closely.<br>Frame the issue.<br>Move with purpose.</p></div></div><div class="jp-insight__copy"><p class="jp-eyebrow">How we work</p><h2>Good counsel should make the next decision easier.</h2><p class="jp-lede">Employment matters rarely arrive neatly labeled. We begin by understanding the pressure points, then turn complexity into a sequence of practical choices.</p><ol class="jp-process-list"><li><span>01</span><div><h3>Understand the moment</h3><p>We start with the facts, the people involved, and what a useful outcome means to you.</p></div></li><li><span>02</span><div><h3>Set the legal frame</h3><p>We identify the claims, obligations, timelines, and tradeoffs that deserve attention first.</p></div></li><li><span>03</span><div><h3>Build the route forward</h3><p>You leave with priorities, clear ownership, and a decision path—not a wall of jargon.</p></div></li></ol><a class="jp-text-link" href="<?php echo esc_url(home_url('/consultation/')); ?>">Start a conversation <span aria-hidden="true">→</span></a></div></div></section>
+
+    <?php if ($services) : ?>
+    <section class="jp-section jp-container" aria-labelledby="jp-local-heading"><div class="jp-section-heading jp-section-heading--split"><div><p class="jp-eyebrow">Built for local search, written for people</p><h2 id="jp-local-heading">Guidance shaped by issue and place.</h2></div><a class="jp-text-link" href="<?php echo esc_url(home_url('/office-directory/')); ?>">Find your office <span aria-hidden="true">→</span></a></div><div class="jp-featured-services"><?php foreach ($services as $index => $service) : $office_id = absint(jp_field('office', $service->ID)); ?><article><span><?php echo esc_html('0' . ($index + 1)); ?></span><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('office_city', $office_id, 'Southern California')); ?></p><h3><a href="<?php echo esc_url(get_permalink($service)); ?>"><?php echo esc_html($service->post_title); ?></a></h3><p><?php echo esc_html(wp_trim_words(wp_strip_all_tags((string) jp_field('unique_local_intro', $service->ID, $service->post_excerpt)), 24)); ?></p><a class="jp-text-link" href="<?php echo esc_url(get_permalink($service)); ?>">Read local guidance <span aria-hidden="true">↗</span></a></article><?php endforeach; ?></div></section>
+    <?php endif; ?>
+
+    <div class="jp-container"><?php jp_render_attorneys(); ?></div>
+
+    <section class="jp-office-band"><div class="jp-container"><div class="jp-section-heading jp-section-heading--split"><div><p class="jp-eyebrow">Close enough to be useful</p><h2>Four offices. One connected team.</h2></div><p>Every location uses the same intake standards and shared knowledge model, with content tailored to the market it serves.</p></div><div class="jp-office-band__list"><?php foreach ($offices as $office) : ?><article><div><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('office_state', $office->ID, 'California')); ?></p><h3><a href="<?php echo esc_url(get_permalink($office)); ?>"><?php echo esc_html((string) jp_field('office_city', $office->ID, $office->post_title)); ?></a></h3><address><?php echo esc_html((string) jp_field('address', $office->ID)); ?></address></div><a href="<?php echo esc_url(get_permalink($office)); ?>" aria-label="View <?php echo esc_attr($office->post_title); ?>"><span aria-hidden="true">→</span></a></article><?php endforeach; ?></div></div></section>
+    <section class="jp-container jp-section"><?php jp_context_cta(); ?></section>
+</main>
+<?php get_footer(); ?>

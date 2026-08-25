@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+get_header();
+the_post();
+$id = get_the_ID();
+$image_id = absint(jp_field('professional_image', $id, get_post_thumbnail_id($id)));
+$practices = (array) jp_field('practice_areas', $id, []);
+$offices = (array) jp_field('offices', $id, []);
+$education = jp_lines((string) jp_field('education', $id));
+$admissions = jp_lines((string) jp_field('admissions', $id));
+?>
+<main id="main-content"><article><header class="jp-attorney-hero"><div class="jp-container"><?php jp_breadcrumbs(); ?><div class="jp-attorney-hero__grid"><div class="jp-attorney-hero__image"><?php echo $image_id ? wp_get_attachment_image($image_id, 'jp-attorney-card', false, ['loading' => 'eager', 'fetchpriority' => 'high', 'alt' => (string) jp_field('fictional_name', $id, get_the_title()) . ', fictional employment attorney']) : ''; ?></div><div><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('position', $id, 'Employment Attorney')); ?></p><h1><?php echo esc_html((string) jp_field('fictional_name', $id, get_the_title())); ?></h1><p class="jp-attorney-hero__lede"><?php echo esc_html(get_the_excerpt()); ?></p><div class="jp-attorney-hero__contact"><a class="jp-button jp-button--primary" href="<?php echo esc_url(home_url('/consultation/')); ?>">Request a consultation</a><a class="jp-text-link" href="mailto:<?php echo esc_attr((string) jp_field('contact_email', $id, 'hello@justicepoint.example')); ?>">Email profile contact</a></div><p class="jp-small">This person and profile are entirely fictional.</p></div></div></div></header>
+<section class="jp-container jp-section jp-content-grid"><div class="jp-prose"><p class="jp-eyebrow">Profile</p><h2>Clear thinking for consequential workplace decisions.</h2><?php echo wp_kses_post(wpautop((string) jp_field('biography', $id, get_the_content()))); ?></div><aside class="jp-aside-list"><?php if ($education) : ?><p class="jp-eyebrow">Education</p><ul><?php foreach ($education as $item) : ?><li><?php echo esc_html($item); ?></li><?php endforeach; ?></ul><?php endif; ?><?php if ($admissions) : ?><p class="jp-eyebrow">Admissions</p><ul><?php foreach ($admissions as $item) : ?><li><?php echo esc_html($item); ?></li><?php endforeach; ?></ul><?php endif; ?></aside></section>
+<section class="jp-section jp-surface"><div class="jp-container"><div class="jp-section-heading jp-section-heading--split"><div><p class="jp-eyebrow">Connected expertise</p><h2>Practices and offices.</h2></div><p>Relationships are maintained as structured source data and reused throughout the site.</p></div><div class="jp-link-grid"><?php foreach ($practices as $practice) : ?><a href="<?php echo esc_url(get_permalink((int) $practice)); ?>"><span>Practice</span><strong><?php echo esc_html(get_the_title((int) $practice)); ?></strong><span aria-hidden="true">→</span></a><?php endforeach; ?><?php foreach ($offices as $office) : ?><a href="<?php echo esc_url(get_permalink((int) $office)); ?>"><span>Office</span><strong><?php echo esc_html(get_the_title((int) $office)); ?></strong><span aria-hidden="true">→</span></a><?php endforeach; ?></div></div></section><section class="jp-container jp-section"><?php jp_context_cta(); ?></section></article></main>
+<?php get_footer(); ?>
+

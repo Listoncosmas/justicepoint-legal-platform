@@ -1,0 +1,9 @@
+<?php
+
+declare(strict_types=1);
+get_header();
+$offices = get_posts(['post_type' => 'office', 'post_status' => 'publish', 'posts_per_page' => 100, 'orderby' => 'menu_order title', 'order' => 'ASC']);
+?>
+<main id="main-content"><header class="jp-page-hero jp-page-hero--archive"><div class="jp-container"><?php jp_breadcrumbs(); ?><p class="jp-eyebrow">Local access, shared standards</p><h1>Offices</h1><p>Four Southern California markets connected through one content model, intake system, and service standard.</p><a class="jp-button jp-button--primary" href="<?php echo esc_url(home_url('/office-directory/')); ?>">Search the office directory</a></div></header><section class="jp-container jp-section"><div class="jp-office-archive"><?php foreach ($offices as $office) : ?><article><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('office_state', $office->ID, 'California')); ?></p><h2><a href="<?php echo esc_url(get_permalink($office)); ?>"><?php echo esc_html($office->post_title); ?></a></h2><address><?php echo esc_html((string) jp_field('address', $office->ID)); ?><br><?php echo esc_html((string) jp_field('office_city', $office->ID)); ?>, <?php echo esc_html((string) jp_field('office_state', $office->ID)); ?> <?php echo esc_html((string) jp_field('zip_code', $office->ID)); ?></address><p><?php echo esc_html((string) jp_field('map_information', $office->ID)); ?></p><div><a class="jp-text-link" href="tel:<?php echo esc_attr((string) preg_replace('/[^+\d]/', '', (string) jp_field('telephone', $office->ID))); ?>"><?php echo esc_html((string) jp_field('telephone', $office->ID)); ?></a><a class="jp-button jp-button--small" href="<?php echo esc_url(get_permalink($office)); ?>">View office</a></div></article><?php endforeach; ?></div></section><section class="jp-container jp-section"><?php jp_context_cta(); ?></section></main>
+<?php get_footer(); ?>
+

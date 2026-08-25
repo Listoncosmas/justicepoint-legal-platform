@@ -1,0 +1,36 @@
+# WordPress core and machine-local configuration
+/*.php
+/.htaccess
+/license.txt
+/readme.html
+/wp-admin/
+/wp-includes/
+/wp-config.php
+
+# Runtime data
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/uploads/
+/wp-content/index.php
+*.log
+.env
+.env.*
+!.env.example
+
+# Commercial and unrelated plugins/themes are intentionally absent from Git
+/wp-content/plugins/*
+!/wp-content/plugins/liston-legal-webops-core/
+/wp-content/themes/*
+!/wp-content/themes/the7-justicepoint-child/
+
+# Dependencies and local tooling state
+**/node_modules/
+**/vendor/
+**/.phpunit.cache/
+*.map
+.DS_Store
+.idea/
+.vscode/
+
+# wp-env runtime
+.wp-env/

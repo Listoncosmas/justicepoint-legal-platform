@@ -1,0 +1,26 @@
+{
+  "key": "group_jp_practice_area",
+  "title": "JusticePoint Practice Area Details",
+  "fields": [
+    {"key":"field_jp_practice_area_short_description","label":"Short description","name":"short_description","type":"textarea"},
+    {"key":"field_jp_practice_area_detailed_intro","label":"Detailed introduction","name":"detailed_intro","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_practice_area_common_claim_types","label":"Common claim types","name":"common_claim_types","type":"textarea"},
+    {"key":"field_jp_practice_area_eligibility","label":"Eligibility information","name":"eligibility","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_practice_area_process_steps","label":"Process steps","name":"process_steps","type":"textarea"},
+    {"key":"field_jp_practice_area_related_faqs","label":"Related FAQs","name":"related_faqs","type":"relationship","post_type":["faq"],"return_format":"id"},
+    {"key":"field_jp_practice_area_related_attorneys","label":"Related attorneys","name":"related_attorneys","type":"relationship","post_type":["attorney"],"return_format":"id"},
+    {"key":"field_jp_practice_area_primary_cta","label":"Primary call to action","name":"primary_cta","type":"text"},
+    {"key":"field_jp_practice_area_seo_title","label":"SEO title override","name":"seo_title","type":"text"},
+    {"key":"field_jp_practice_area_meta_description","label":"Meta description","name":"meta_description","type":"textarea"},
+    {"key":"field_jp_practice_area_canonical_override","label":"Canonical override","name":"canonical_override","type":"url"},
+    {"key":"field_jp_practice_area_indexation","label":"Indexation","name":"indexation","type":"select","choices":{"index":"Index","noindex":"Noindex"},"default_value":"index"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"practice_area"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "seamless",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1787616000
+}
+

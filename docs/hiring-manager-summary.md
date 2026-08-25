@@ -1,0 +1,8 @@
+# Hiring-manager technical summary
+
+I built JusticePoint Legal Platform as a production-style WordPress demonstration for a fictional four-office employment law firm. It retains The7 and Elementor Pro for editorial continuity, but moves portable application logic into a PSR-4 plugin: five content types, relationships, duplicate service/location prevention, ACF Local JSON, four custom Elementor widgets, cached REST filtering, technical SEO/schema, redirects and WP-CLI migration tools, CRM webhook/retry plumbing, privacy-safe analytics, and automated tests.
+
+The The7 child theme delivers an original responsive legal-services system rather than a template reskin. A service/location page is published by selecting one practice and one office and writing only unique local material; the shared template resolves contact details, reusable practice guidance, attorneys, FAQs, canonicals, breadcrumbs, and JSON-LD. The directory is useful without JavaScript and conditionally enhances with MapLibre. The consultation workflow emits analytics only after confirmed CRM delivery and never includes PII.
+
+The repository excludes commercial dependencies, provides idempotent seed/setup commands, a 20-URL migration dataset with loop/chain validation and Nginx/Apache exports, GitHub Actions, PHPUnit/WPCS/ESLint/Stylelint/Vite, architecture/SEO/performance/migration documentation, and desktop/mobile browser evidence. The local demo is protected with HTML and HTTP noindex/nofollow controls. Production-only claims—traffic, rankings, conversions, CRM behavior, hosting cache, Search Console, and Lighthouse under real infrastructure—are explicitly separated from what was verified locally.
+

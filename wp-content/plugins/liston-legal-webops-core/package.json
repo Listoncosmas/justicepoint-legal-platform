@@ -1,0 +1,24 @@
+{
+  "name": "liston-legal-webops-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build && cp node_modules/maplibre-gl/dist/maplibre-gl.css assets/dist/maplibre-gl.css",
+    "dev": "vite build --watch",
+    "lint:js": "eslint assets/src assets/js",
+    "lint:css": "stylelint 'assets/css/**/*.css'",
+    "format:check": "prettier --check 'assets/{src,js,css}/**/*.{js,css,json}'"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.7.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "eslint": "^9.34.0",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.23.1",
+    "stylelint-config-standard": "^39.0.0",
+    "vite": "^7.1.3"
+  }
+}

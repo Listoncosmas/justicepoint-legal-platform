@@ -1,0 +1,17 @@
+{
+  "key": "group_jp_faq",
+  "title": "JusticePoint FAQ Details",
+  "fields": [
+    {"key":"field_jp_faq_answer","label":"Answer","name":"answer","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_jp_faq_related_practices","label":"Related practice areas","name":"related_practices","type":"relationship","post_type":["practice_area"],"return_format":"id"},
+    {"key":"field_jp_faq_related_offices","label":"Related offices","name":"related_offices","type":"relationship","post_type":["office"],"return_format":"id"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"faq"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "seamless",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1787616000
+}
+

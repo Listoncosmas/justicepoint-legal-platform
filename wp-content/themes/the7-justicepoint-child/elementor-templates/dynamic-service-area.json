@@ -1,0 +1,25 @@
+{
+  "version": "0.4",
+  "title": "JusticePoint — Dynamic Service Area",
+  "type": "single-post",
+  "content": [
+    {
+      "id": "jpservice01",
+      "elType": "container",
+      "isInner": false,
+      "settings": {"content_width":"full","html_tag":"div"},
+      "elements": [
+        {
+          "id": "jpshortcode1",
+          "elType": "widget",
+          "widgetType": "shortcode",
+          "settings": {"shortcode":"[justicepoint_dynamic_service_area]"},
+          "elements": []
+        }
+      ]
+    }
+  ],
+  "page_settings": {},
+  "conditions": ["include/singular/service_area"]
+}
+
