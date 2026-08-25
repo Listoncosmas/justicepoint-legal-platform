@@ -1094,6 +1094,15 @@ body.jp-site .jp-context-cta--accent h2,
   margin-bottom: clamp(20px, 2.5vw, 36px);
 }
 
+.jp-elementor-proof .elementor-heading-title {
+  color: var(--jp-ink);
+  font-family: var(--jp-serif);
+  font-size: clamp(2.15rem, 3.65vw, 3.75rem);
+  font-weight: 400;
+  letter-spacing: -0.028em;
+  line-height: 1.08;
+}
+
 .jp-elementor-proof .elementor-widget-jp-related-practices {
   margin-bottom: clamp(42px, 6vw, 82px);
 }
