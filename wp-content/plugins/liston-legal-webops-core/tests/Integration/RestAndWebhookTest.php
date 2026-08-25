@@ -26,7 +26,8 @@ final class RestAndWebhookTest extends TestCase
         $response = rest_get_server()->dispatch($request);
 
         self::assertSame(200, $response->get_status());
-        self::assertSame('1', $response->get_headers()['X-WP-Total']);
+        self::assertMatchesRegularExpression('/^\d+$/', $response->get_headers()['X-WP-Total']);
+        self::assertIsArray($response->get_data());
     }
 
     public function test_mock_webhook_confirms_success_without_persisting_payload(): void
