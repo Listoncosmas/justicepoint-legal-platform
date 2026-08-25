@@ -2,6 +2,8 @@
 
 JusticePoint Legal Platform is a production-style WordPress portfolio demonstration for a fictional multi-location employment law firm. It solves a real publishing problem: one legal service may need a central practice guide, several office profiles, and dozens of useful local pages without copying layouts or letting SEO-critical data drift.
 
+Live demonstration: `https://justicepoint.crmpl.us/` (publicly reachable, intentionally `noindex,nofollow` because every identity and legal detail is fictional).
+
 The public-facing firm, attorneys, addresses, telephone numbers, schools, content, and imagery are fictional. The site is not a law firm, does not offer legal advice, and is deliberately protected with `noindex,nofollow` in local/demo environments.
 
 ## The outcome
@@ -88,7 +90,7 @@ Widgets declare `get_style_depends()` and `get_script_depends()`. The ~285 KB gz
 
 - Server-rendered titles, descriptions, Open Graph, breadcrumbs, canonicals, robots, and JSON-LD.
 - A consistent WordPress trailing-slash policy.
-- Canonical overrides must use HTTP(S), match the site host, and contain no fragments.
+- Canonical overrides must match the site's scheme, host, port, and base path and contain no credentials, queries, or fragments.
 - Page 2+ archives self-canonicalize to their exact page.
 - Search, 404, and uncontrolled filter combinations are `noindex,follow` in production.
 - Local/demo environments override that with `noindex,nofollow,noarchive` in both HTML and `X-Robots-Tag`.
@@ -142,6 +144,7 @@ No name, email, telephone, message, referrer, click ID, or other PII is sent to 
 ## Performance and accessibility
 
 - Custom map code is conditional; consultation code loads only when its form renders.
+- WordPress core owns responsive-image loading hints; Elementor's overlapping optimizer is disabled to prevent duplicate `loading`/`fetchpriority` attributes.
 - The global theme script is ~1.2 KB before gzip.
 - The7 FSE/post-type presentation assets are safely dequeued because custom templates do not use them.
 - Original PNG generation masters were converted to 41–90 KB WebP files; WordPress generates responsive attorney sizes.
@@ -199,7 +202,7 @@ wp liston-webops seed
 wp liston-webops redirects validate tests/fixtures/redirects.csv
 ```
 
-The local completed run passed 12 PHPUnit tests / 45 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
+The completed run passed 14 PHPUnit tests / 52 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
 
 ## Repository map
 
@@ -211,8 +214,10 @@ wp-content/
   themes/the7-justicepoint-child/
     assets/  inc/  template-parts/  elementor-templates/
 docs/
-  architecture.md  migration-plan.md  seo-decisions.md
+  architecture.md  deployment.md  migration-plan.md  seo-decisions.md
   performance.md  walkthrough.md  hiring-manager-summary.md  screenshots/
+ops/
+  nginx/  php-fpm/  cron/
 .github/workflows/ci.yml
 ```
 
@@ -220,6 +225,7 @@ docs/
 
 - Nonces and capability checks on administrative/form mutation.
 - Typed sanitization for registered meta and REST fields.
+- Empty core author/date/category/tag archives return 404, and anonymous REST user enumeration is blocked.
 - Escaping at output boundaries; safe HTML allow-lists for authored rich text.
 - Prepared database identifiers/values and a unique redirect source index.
 - Safe webhook URLs, secrets only from environment, no redirect following, bounded timeout/retry.
@@ -231,13 +237,14 @@ docs/
 
 The7, Elementor Pro, and ACF Pro are commercial and absent from Git. This local installation has The7 and Elementor Pro; ACF Pro was not present, so the included native fallback keeps the site editable and functional while Local JSON remains ready for licensed production use.
 
-A real launch would still require access to production hosting/CDN, DNS/TLS, object/page cache, Search Console, analytics/GTM, consent requirements, the CRM contract and field mapping, email/SMS providers, legal-content review, privacy counsel, monitoring/error aggregation, backup/restore procedures, traffic history, backlinks, indexed URL inventory, and representative production data. The recorded Lighthouse results apply only to the disclosed local test environment; no production score, ranking, conversion, testimonial, review, rating, or case outcome is claimed.
+The portfolio deployment now demonstrates isolated Nginx/PHP-FPM hosting, MariaDB, Cloudflare-proxied DNS, origin TLS, FastCGI caching, system cron, and release rollback. A real law-firm launch would still require Search Console, analytics/GTM, consent requirements, the CRM contract and field mapping, email/SMS providers, legal-content review, privacy counsel, monitoring/error aggregation, formal backup/restore ownership, traffic history, backlinks, indexed URL inventory, and representative production data. No ranking, conversion, testimonial, review, rating, or case outcome is claimed.
 
 ## Portfolio handoff
 
 - [Three-minute walkthrough](docs/walkthrough.md)
 - [Concise hiring-manager summary](docs/hiring-manager-summary.md)
 - [Architecture](docs/architecture.md)
+- [Oracle deployment](docs/deployment.md)
 - [Performance methodology](docs/performance.md)
 - [Desktop and mobile screenshots](docs/screenshots)
 

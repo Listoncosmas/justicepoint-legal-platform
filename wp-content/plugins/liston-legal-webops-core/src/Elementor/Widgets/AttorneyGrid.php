@@ -64,10 +64,9 @@ final class AttorneyGrid extends Widget_Base
         foreach (array_slice(array_map('absint', $ids), 0, min(12, max(1, (int) $settings['count']))) as $id) {
             $image_id = absint(field('professional_image', $id, get_post_thumbnail_id($id)));
             echo '<article class="jp-attorney-card"><a class="jp-attorney-card__image" href="' . esc_url(get_permalink($id)) . '" tabindex="-1" aria-hidden="true">';
-            echo $image_id ? wp_get_attachment_image($image_id, 'medium_large', false, ['loading' => 'lazy', 'alt' => '']) : '<span class="jp-attorney-card__placeholder" aria-hidden="true"></span>';
+            echo $image_id ? wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'class' => 'attachment-medium_large size-medium_large jp-lazy-attorney']) : '<span class="jp-attorney-card__placeholder" aria-hidden="true"></span>';
             echo '</a><p class="jp-eyebrow">' . esc_html((string) field('position', $id, 'Employment Attorney')) . '</p><h3><a href="' . esc_url(get_permalink($id)) . '">' . esc_html((string) field('fictional_name', $id, get_the_title($id))) . '</a></h3><p>' . esc_html(wp_trim_words(wp_strip_all_tags((string) field('biography', $id, get_the_excerpt($id))), 24)) . '</p><a class="jp-text-link" href="' . esc_url(get_permalink($id)) . '">View profile <span aria-hidden="true">→</span></a></article>';
         }
         echo '</div>';
     }
 }
-

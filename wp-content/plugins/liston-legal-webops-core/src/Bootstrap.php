@@ -14,6 +14,7 @@ use Liston\LegalWebOps\Migration\RedirectManager;
 use Liston\LegalWebOps\Migration\RedirectRepository;
 use Liston\LegalWebOps\REST\OfficeDirectoryController;
 use Liston\LegalWebOps\SEO\TechnicalSEO;
+use Liston\LegalWebOps\Security\Hardening;
 
 final class Bootstrap
 {
@@ -34,6 +35,7 @@ final class Bootstrap
         (new OfficeDirectoryController())->register();
         (new ConsultationController())->register();
         (new WidgetManager())->register();
+        (new Hardening())->register();
 
         if (defined('WP_CLI') && WP_CLI) {
             (new Commands())->register();
@@ -54,4 +56,3 @@ final class Bootstrap
         flush_rewrite_rules(false);
     }
 }
-

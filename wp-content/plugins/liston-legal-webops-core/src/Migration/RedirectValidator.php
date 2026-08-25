@@ -22,7 +22,7 @@ final class RedirectValidator
             return ['rows' => [], 'issues' => [['level' => 'error', 'code' => 'file_unreadable', 'row' => 0, 'message' => 'CSV file could not be opened.']], 'valid' => false];
         }
 
-        $headers = fgetcsv($handle);
+        $headers = fgetcsv($handle, null, ',', '"', '');
         $headers = is_array($headers) ? array_map(static fn ($item): string => strtolower(trim((string) $item)), $headers) : [];
         if (! in_array('source', $headers, true) || ! in_array('destination', $headers, true)) {
             fclose($handle);
@@ -30,7 +30,7 @@ final class RedirectValidator
         }
 
         $line = 1;
-        while (($values = fgetcsv($handle)) !== false) {
+        while (($values = fgetcsv($handle, null, ',', '"', '')) !== false) {
             ++$line;
             if ($values === [null] || $values === []) {
                 continue;

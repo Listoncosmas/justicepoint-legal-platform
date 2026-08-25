@@ -172,13 +172,25 @@ final class ContentTypes
     {
         foreach (Fields::definitions() as $post_type => $fields) {
             foreach ($fields as $key => $field) {
+                $rest_type = $field['rest_type'] ?? 'string';
+                $show_in_rest = true;
+
+                if ('array' === $rest_type) {
+                    $show_in_rest = [
+                        'schema' => [
+                            'type'  => 'array',
+                            'items' => ['type' => 'integer'],
+                        ],
+                    ];
+                }
+
                 register_post_meta(
                     $post_type,
                     $key,
                     [
                         'single'            => true,
-                        'type'              => $field['rest_type'] ?? 'string',
-                        'show_in_rest'      => true,
+                        'type'              => $rest_type,
+                        'show_in_rest'      => $show_in_rest,
                         'sanitize_callback' => [Fields::class, 'sanitize_registered_meta'],
                         'auth_callback'     => static fn (): bool => current_user_can('edit_posts'),
                     ]
@@ -198,4 +210,3 @@ final class ContentTypes
         };
     }
 }
-

@@ -14,7 +14,7 @@ declare(strict_types=1);
 <aside class="jp-demo-bar" aria-label="Demonstration notice"><div class="jp-container"><span>Fictional demo — not legal advice</span><span aria-hidden="true">•</span><span>Not a law firm</span></div></aside>
 <header class="jp-header" data-jp-header>
     <div class="jp-container jp-header__inner">
-        <a class="jp-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="JusticePoint Employment Law home">
+        <a class="jp-logo" href="<?php echo esc_url(home_url('/')); ?>">
             <svg width="37" height="37" viewBox="0 0 37 37" aria-hidden="true" focusable="false"><path d="M4 4h29v29H4z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 9v12.2c0 4.7 2.8 7.1 7.3 7.1 4.7 0 7.7-2.7 7.7-8V9h-5v11.4c0 2.2-.9 3.3-2.7 3.3-1.6 0-2.4-.9-2.4-3V9z" fill="currentColor"/><circle cx="26" cy="26" r="2.5" fill="#8f1d35"/></svg>
             <span><strong>JusticePoint</strong><small>Employment Law</small></span>
         </a>

@@ -15,6 +15,7 @@ final class TechnicalSEOTest extends TestCase
         self::assertTrue($seo->valid_canonical_override(home_url('/canonical-target/')));
         self::assertFalse($seo->valid_canonical_override('https://unrelated.example/target/'));
         self::assertFalse($seo->valid_canonical_override('javascript:alert(1)'));
+        self::assertFalse($seo->valid_canonical_override(home_url('/canonical-target/?preview=1')));
+        self::assertFalse($seo->valid_canonical_override(home_url('/canonical-target/#section')));
     }
 }
-

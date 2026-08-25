@@ -63,7 +63,7 @@ function jp_render_attorneys(array $ids = [], string $title = 'A team built arou
         <div class="jp-section-heading jp-section-heading--split"><div><p class="jp-eyebrow">Fictional professionals</p><h2 id="jp-team-title"><?php echo esc_html($title); ?></h2></div><a class="jp-text-link" href="<?php echo esc_url(get_post_type_archive_link('attorney')); ?>">Meet the whole team <span aria-hidden="true">→</span></a></div>
         <div class="jp-attorney-grid jp-attorney-grid--4">
             <?php foreach (array_slice($ids, 0, 4) as $id) : $image_id = absint(jp_field('professional_image', $id, get_post_thumbnail_id($id))); ?>
-                <article class="jp-attorney-card"><a class="jp-attorney-card__image" href="<?php echo esc_url(get_permalink($id)); ?>" tabindex="-1" aria-hidden="true"><?php echo $image_id ? wp_get_attachment_image($image_id, 'jp-attorney-card', false, ['loading' => 'lazy', 'alt' => '', 'width' => 720, 'height' => 900]) : ''; ?></a><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('position', $id, 'Employment Attorney')); ?></p><h3><a href="<?php echo esc_url(get_permalink($id)); ?>"><?php echo esc_html((string) jp_field('fictional_name', $id, get_the_title($id))); ?></a></h3><p><?php echo esc_html(wp_trim_words(wp_strip_all_tags((string) jp_field('biography', $id, get_the_excerpt($id))), 22)); ?></p><a class="jp-text-link" href="<?php echo esc_url(get_permalink($id)); ?>">View profile <span aria-hidden="true">→</span></a></article>
+                <article class="jp-attorney-card"><a class="jp-attorney-card__image" href="<?php echo esc_url(get_permalink($id)); ?>" tabindex="-1" aria-hidden="true"><?php echo $image_id ? wp_get_attachment_image($image_id, 'jp-attorney-card', false, ['alt' => '', 'class' => 'attachment-jp-attorney-card size-jp-attorney-card jp-lazy-attorney', 'width' => 720, 'height' => 900]) : ''; ?></a><p class="jp-eyebrow"><?php echo esc_html((string) jp_field('position', $id, 'Employment Attorney')); ?></p><h3><a href="<?php echo esc_url(get_permalink($id)); ?>"><?php echo esc_html((string) jp_field('fictional_name', $id, get_the_title($id))); ?></a></h3><p><?php echo esc_html(wp_trim_words(wp_strip_all_tags((string) jp_field('biography', $id, get_the_excerpt($id))), 22)); ?></p><a class="jp-text-link" href="<?php echo esc_url(get_permalink($id)); ?>">View profile <span aria-hidden="true">→</span></a></article>
             <?php endforeach; ?>
         </div>
     </section>
@@ -105,4 +105,3 @@ function jp_render_service_area_content(): void
 {
     get_template_part('template-parts/content', 'service-area');
 }
-

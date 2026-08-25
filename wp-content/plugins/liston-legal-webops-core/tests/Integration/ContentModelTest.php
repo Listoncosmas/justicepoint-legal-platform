@@ -18,5 +18,12 @@ final class ContentModelTest extends TestCase
             self::assertTrue(taxonomy_exists($taxonomy), $taxonomy . ' should be registered.');
         }
     }
-}
 
+    public function test_relationship_meta_declares_rest_array_item_schema(): void
+    {
+        $meta = get_registered_meta_keys('post', 'practice_area');
+
+        self::assertSame('array', $meta['related_faqs']['type']);
+        self::assertSame('integer', $meta['related_faqs']['show_in_rest']['schema']['items']['type']);
+    }
+}

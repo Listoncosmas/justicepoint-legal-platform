@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+*/5 * * * * www-data /usr/local/bin/wp cron event run --due-now --path=/var/www/justicepoint.crmpl.us/current --quiet

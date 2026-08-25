@@ -29,8 +29,8 @@ final class SchemaTest extends TestCase
         $post = $wp_query->post;
         setup_postdata($post);
         $types = array_column((new TechnicalSEO())->schema_graph(), '@type');
+        self::assertContains('Organization', $types);
         self::assertContains('Person', $types);
         self::assertContains('BreadcrumbList', $types);
     }
 }
-

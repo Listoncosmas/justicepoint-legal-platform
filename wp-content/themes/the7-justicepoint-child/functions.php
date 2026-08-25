@@ -20,6 +20,7 @@ add_action(
         add_theme_support('editor-styles');
         register_nav_menus(['primary' => 'Primary navigation', 'footer' => 'Footer navigation']);
         add_image_size('jp-attorney-card', 720, 900, true);
+        add_image_size('jp-attorney-mobile', 480, 600, true);
         add_image_size('jp-wide', 1600, 900, true);
     },
     20
@@ -71,6 +72,35 @@ add_action('init', static function (): void {
 add_filter('use_default_gallery_style', '__return_false');
 add_filter('should_load_separate_core_block_assets', '__return_true');
 add_filter('elementor/frontend/print_google_fonts', '__return_false');
+
+add_filter(
+    'wp_get_attachment_image_attributes',
+    static function (array $attributes): array {
+        if (str_contains((string) ($attributes['class'] ?? ''), 'jp-lazy-attorney')) {
+            $attributes['loading'] = 'lazy';
+            unset($attributes['fetchpriority']);
+        }
+        return $attributes;
+    },
+    100
+);
+
+add_filter(
+    'wp_content_img_tag',
+    static function (string $image): string {
+        if (! str_contains($image, 'jp-lazy-attorney')) {
+            return $image;
+        }
+        $processor = new WP_HTML_Tag_Processor($image);
+        if ($processor->next_tag('IMG')) {
+            $processor->set_attribute('loading', 'lazy');
+            $processor->remove_attribute('fetchpriority');
+            return $processor->get_updated_html();
+        }
+        return $image;
+    },
+    100
+);
 
 add_action('wp', static function (): void {
     remove_action('wp_head', 'wp_print_font_faces', 50);

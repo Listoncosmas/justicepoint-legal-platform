@@ -30,6 +30,8 @@ final class SeedCommand
         update_option('permalink_structure', '/%postname%/');
         update_option('timezone_string', 'America/Los_Angeles');
         update_option('default_comment_status', 'closed');
+        // WordPress core owns image loading hints; Elementor's parallel optimizer can duplicate attributes.
+        update_option('elementor_optimized_image_loading', '0');
 
         if (wp_get_theme('the7-justicepoint-child')->exists()) {
             switch_theme('the7-justicepoint-child');
@@ -79,6 +81,11 @@ final class SeedCommand
                 }
             }
             wp_set_object_terms($id, array_keys($practice_ids), 'practice_category');
+        }
+
+        $site_icon_id = $this->import_image('justicepoint-site-icon.png', 'JusticePoint fictional employment law mark');
+        if ($site_icon_id) {
+            update_option('site_icon', $site_icon_id);
         }
 
         $image_ids = [];
@@ -150,15 +157,16 @@ final class SeedCommand
         }
 
         $pages = [
-            'home' => ['title' => 'JusticePoint Employment Law', 'excerpt' => 'Clarity when work gets complicated.'],
-            'office-directory' => ['title' => 'Office Directory & Map', 'excerpt' => 'Search JusticePoint offices by market and practice area.'],
-            'consultation' => ['title' => 'Request a Consultation', 'excerpt' => 'Start a focused, confidentiality-minded intake conversation.'],
-            'contact' => ['title' => 'Contact', 'excerpt' => 'Choose the clearest way to reach JusticePoint.'],
-            'privacy' => ['title' => 'Privacy', 'excerpt' => 'How this fictional demonstration handles intake and measurement data.'],
+            'home' => ['title' => 'JusticePoint Employment Law', 'excerpt' => 'Clarity when work gets complicated.', 'seo_title' => 'Employment Law Guidance | JusticePoint', 'meta' => 'Fictional multi-location employment law guidance for individuals and employers, with curated local pages, attorney profiles, and clear next steps.'],
+            'office-directory' => ['title' => 'Office Directory & Map', 'excerpt' => 'Search JusticePoint offices by market and practice area.', 'seo_title' => 'Employment Law Office Directory | JusticePoint', 'meta' => 'Filter fictional JusticePoint employment law offices by city, state, or practice area, with an accessible list and interactive map.'],
+            'consultation' => ['title' => 'Request a Consultation', 'excerpt' => 'Start a focused, confidentiality-minded intake conversation.', 'seo_title' => 'Request an Employment Law Consultation | JusticePoint', 'meta' => 'Start a focused fictional employment law intake with clear privacy guidance, accessible validation, and office and practice preferences.'],
+            'contact' => ['title' => 'Contact', 'excerpt' => 'Choose the clearest way to reach JusticePoint.', 'seo_title' => 'Contact JusticePoint Employment Law', 'meta' => 'Contact the fictional JusticePoint Employment Law team, browse four Southern California offices, or begin a structured consultation request.'],
+            'privacy' => ['title' => 'Privacy', 'excerpt' => 'How this fictional demonstration handles intake and measurement data.', 'seo_title' => 'Privacy and Intake Data | JusticePoint', 'meta' => 'Review how the fictional JusticePoint demonstration handles intake, CRM delivery, analytics events, retention, security, and user choices.'],
         ];
         $page_ids = [];
         foreach ($pages as $slug => $data) {
             $page_ids[$slug] = $this->upsert_post('page', 'page:' . $slug, $data['title'], '', $data['excerpt'], $slug, 0);
+            $this->set_meta($page_ids[$slug], ['seo_title' => $data['seo_title'], 'meta_description' => $data['meta'], 'indexation' => 'index']);
         }
         update_option('show_on_front', 'page');
         update_option('page_on_front', $page_ids['home']);
@@ -221,7 +229,8 @@ final class SeedCommand
             return 0;
         }
         require_once ABSPATH . 'wp-admin/includes/image.php';
-        $attachment = wp_insert_attachment(['post_mime_type' => 'image/webp', 'post_title' => pathinfo($filename, PATHINFO_FILENAME), 'post_status' => 'inherit'], $upload['file']);
+        $filetype = wp_check_filetype($upload['file']);
+        $attachment = wp_insert_attachment(['post_mime_type' => $filetype['type'] ?: 'application/octet-stream', 'post_title' => pathinfo($filename, PATHINFO_FILENAME), 'post_status' => 'inherit'], $upload['file']);
         if (is_wp_error($attachment)) {
             return 0;
         }
@@ -240,11 +249,11 @@ final class SeedCommand
             wp_delete_post($item->ID, true);
         }
         $items = [
-            ['Practice Areas', get_post_type_archive_link('practice_area')],
-            ['Offices', get_post_type_archive_link('office')],
-            ['Attorneys', get_post_type_archive_link('attorney')],
-            ['Directory', get_permalink($pages['office-directory'])],
-            ['Contact', get_permalink($pages['contact'])],
+            ['Practice Areas', user_trailingslashit((string) get_post_type_archive_link('practice_area'))],
+            ['Offices', user_trailingslashit((string) get_post_type_archive_link('office'))],
+            ['Attorneys', user_trailingslashit((string) get_post_type_archive_link('attorney'))],
+            ['Directory', user_trailingslashit((string) get_permalink($pages['office-directory']))],
+            ['Contact', user_trailingslashit((string) get_permalink($pages['contact']))],
         ];
         foreach ($items as [$title, $url]) {
             wp_update_nav_menu_item($menu_id, 0, ['menu-item-title' => $title, 'menu-item-url' => $url, 'menu-item-status' => 'publish', 'menu-item-type' => 'custom']);
@@ -337,4 +346,3 @@ final class SeedCommand
         return $map[$slug] ?? [];
     }
 }
-
