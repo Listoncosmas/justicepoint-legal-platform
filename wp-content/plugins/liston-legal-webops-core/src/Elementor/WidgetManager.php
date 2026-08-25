@@ -17,10 +17,12 @@ final class WidgetManager
         add_action('elementor/elements/categories_registered', [$this, 'category']);
         add_action('elementor/widgets/register', [$this, 'widgets']);
         add_shortcode('justicepoint_office_directory', static fn (array $attributes = []): string => self::directory_shortcode($attributes));
-        add_shortcode('justicepoint_dynamic_service_area', static function (): string {
+        add_shortcode('justicepoint_dynamic_service_area', static function (array $attributes = []): string {
             if (! is_singular('service_area')) {
                 return '';
             }
+            $attributes = shortcode_atts(['include_context_cta' => 'yes'], $attributes, 'justicepoint_dynamic_service_area');
+            $jp_include_context_cta = ! in_array(strtolower((string) $attributes['include_context_cta']), ['0', 'false', 'no'], true);
             $template = locate_template('template-parts/content-service-area.php');
             if ($template === '') {
                 return '<p>Service-area template is unavailable.</p>';

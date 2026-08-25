@@ -44,6 +44,10 @@ final class RelatedPracticeAreas extends Widget_Base
             $args['tax_query'] = [['taxonomy' => 'practice_category', 'field' => 'term_id', 'terms' => $terms]];
         }
         $query = new \WP_Query($args);
+        if (! $query->have_posts() && isset($args['tax_query'])) {
+            unset($args['tax_query']);
+            $query = new \WP_Query($args);
+        }
         if (! $query->have_posts()) {
             return;
         }
@@ -56,4 +60,3 @@ final class RelatedPracticeAreas extends Widget_Base
         echo '</div>';
     }
 }
-

@@ -3,7 +3,7 @@
  * Plugin Name: JusticePoint Legal WebOps Core
  * Plugin URI:  https://github.com/listoncosmas/justicepoint-legal-platform
  * Description: Portable content, SEO, directory, intake, migration, REST, CLI, and Elementor services for the JusticePoint demonstration platform.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Liston Cosmas
  * License:     GPL-2.0-or-later
  * Text Domain: liston-legal-webops
@@ -19,7 +19,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('JP_WEBOPS_VERSION', '1.0.0');
+define('JP_WEBOPS_VERSION', '1.0.1');
 define('JP_WEBOPS_FILE', __FILE__);
 define('JP_WEBOPS_PATH', plugin_dir_path(__FILE__));
 define('JP_WEBOPS_URL', plugin_dir_url(__FILE__));
@@ -66,4 +66,3 @@ add_action(
         Bootstrap::instance()->register();
     }
 );
-

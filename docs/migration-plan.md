@@ -14,6 +14,8 @@ Cluster pages by legal service, intent, market, and overlapping content. For eac
 
 Write explicit source and final destination rows. Do not redirect every removed service to the homepage. Preserve query strings only when they remain useful and safe. Normalize slash/protocol policy before import.
 
+Brand migrations may legitimately send the same path to a different host, for example `/service/` to `https://newbrand.example/service/`. The validator's comparison key therefore retains scheme, host, effective port, and normalized path. This prevents a cross-domain move from being misclassified as a loop while still detecting a genuine same-origin self-redirect. At runtime, WordPress allows only the already validated destination host for that single redirect request.
+
 ## 4. Update owned references
 
 Change internal links, navigation, XML sitemaps, HTML canonicals, hreflang if applicable, paid campaigns, CRM templates, email links, and structured data to the final URLs. A redirect is not a substitute for updating an owned link.
@@ -48,4 +50,3 @@ Daily initially, then weekly: coverage, crawl stats, soft 404s, redirect errors,
 Blocking errors: malformed/missing endpoints, duplicate sources, self/two-way/arbitrary cycles, chains, unsafe mass-home consolidation, final destination 4xx/5xx, or a destination that itself redirects.
 
 Review warnings: shared destinations, scheme changes, `.html`/slash collisions, unreachable destination checks, or unsupported status normalization.
-

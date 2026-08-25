@@ -268,19 +268,45 @@ final class SeedCommand
         if (! post_type_exists('elementor_library')) {
             return;
         }
-        $data = [[
-            'id' => 'jpservice01', 'elType' => 'container', 'isInner' => false,
-            'settings' => ['content_width' => 'full', 'html_tag' => 'div'],
-            'elements' => [[
-                'id' => 'jpshortcode1', 'elType' => 'widget', 'widgetType' => 'shortcode',
-                'settings' => ['shortcode' => '[justicepoint_dynamic_service_area]'], 'elements' => [],
-            ]],
-        ]];
+        $data = self::service_area_template_data();
         $id = $this->upsert_post('elementor_library', 'elementor:service-area-template', 'JusticePoint — Dynamic Service Area', '', '', 'justicepoint-dynamic-service-area', 0);
         $this->set_meta($id, [
             '_elementor_edit_mode' => 'builder', '_elementor_template_type' => 'single-post', '_elementor_data' => wp_slash(wp_json_encode($data)),
             '_elementor_page_settings' => [], '_elementor_conditions' => ['include/singular/service_area'], '_wp_page_template' => 'elementor_header_footer',
         ]);
+    }
+
+    /** @return array<int,array<string,mixed>> */
+    public static function service_area_template_data(): array
+    {
+        return [
+            [
+                'id' => 'jpservice01', 'elType' => 'container', 'isInner' => false,
+                'settings' => ['content_width' => 'full', 'html_tag' => 'div'],
+                'elements' => [[
+                    'id' => 'jpshortcode1', 'elType' => 'widget', 'widgetType' => 'shortcode',
+                    'settings' => ['shortcode' => '[justicepoint_dynamic_service_area include_context_cta="no"]'], 'elements' => [],
+                ]],
+            ],
+            [
+                'id' => 'jpdirect01', 'elType' => 'container', 'isInner' => false,
+                'settings' => ['content_width' => 'boxed', 'html_tag' => 'section', 'css_classes' => 'jp-container jp-section jp-elementor-proof'],
+                'elements' => [
+                    [
+                        'id' => 'jpheading01', 'elType' => 'widget', 'widgetType' => 'heading',
+                        'settings' => ['title' => 'Related employment law guidance', 'header_size' => 'h2'], 'elements' => [],
+                    ],
+                    [
+                        'id' => 'jprelated01', 'elType' => 'widget', 'widgetType' => 'jp-related-practices',
+                        'settings' => ['count' => 3, 'orderby' => 'menu_order', 'order' => 'ASC', 'layout' => 'grid'], 'elements' => [],
+                    ],
+                    [
+                        'id' => 'jpcontext01', 'elType' => 'widget', 'widgetType' => 'jp-contextual-consultation',
+                        'settings' => ['eyebrow' => 'A clear next step', 'heading' => 'Start with the team serving this issue and market', 'variant' => 'accent', 'button_label' => 'Request a consultation'], 'elements' => [],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /** @return array<string,array<string,mixed>> */

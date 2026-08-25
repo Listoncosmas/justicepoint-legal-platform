@@ -13,6 +13,10 @@ final class RedirectValidatorTest extends TestCase
     public function test_normalizes_paths_without_query_strings(): void
     {
         self::assertSame('/services/example.html', RedirectRepository::normalize_path('https://example.test/services/example.html?utm=legacy'));
+        self::assertNotSame(
+            RedirectRepository::comparison_key('/service/'),
+            RedirectRepository::comparison_key('https://example.com/service/')
+        );
     }
 
     public function test_detects_loops_chains_duplicates_and_missing_destinations(): void
@@ -25,5 +29,14 @@ final class RedirectValidatorTest extends TestCase
         self::assertContains('redirect_chain', $codes);
         self::assertContains('missing_destination', $codes);
     }
-}
 
+    public function test_cross_domain_same_path_is_not_a_loop_or_chain(): void
+    {
+        $result = (new RedirectValidator())->validate_file(dirname(__DIR__) . '/fixtures/redirects-cross-domain.csv', false);
+        $codes = array_column($result['issues'], 'code');
+
+        self::assertTrue($result['valid']);
+        self::assertNotContains('redirect_loop', $codes);
+        self::assertNotContains('redirect_chain', $codes);
+    }
+}

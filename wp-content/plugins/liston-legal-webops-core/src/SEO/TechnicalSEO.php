@@ -91,7 +91,7 @@ final class TechnicalSEO
         $description = $this->description();
         $title      = wp_get_document_title();
         $image      = $this->social_image();
-        $og_type    = is_singular('attorney') ? 'profile' : (is_singular(['practice_area', 'service_area']) ? 'article' : 'website');
+        $og_type    = $this->open_graph_type();
 
         if ($canonical !== '') {
             printf("\n<link rel=\"canonical\" href=\"%s\">\n", esc_url($canonical));
@@ -139,6 +139,17 @@ final class TechnicalSEO
         if ($graph !== []) {
             echo '<script type="application/ld+json">' . wp_json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
         }
+    }
+
+    public function open_graph_type(): string
+    {
+        if (is_front_page()) {
+            return 'website';
+        }
+        if (is_singular('attorney')) {
+            return 'profile';
+        }
+        return is_singular(['practice_area', 'service_area']) ? 'article' : 'website';
     }
 
     public function canonical_url(): string

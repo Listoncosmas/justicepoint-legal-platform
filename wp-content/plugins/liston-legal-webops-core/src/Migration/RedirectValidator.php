@@ -60,10 +60,10 @@ final class RedirectValidator
                 $issues[] = $this->issue('warning', 'scheme_inconsistency', $line, 'HTTP source maps to HTTPS; confirm the migration protocol policy.');
             }
             if ($source !== '' && $destination !== '') {
-                $source_path = RedirectRepository::normalize_path($source);
-                $destination_path = RedirectRepository::normalize_path($destination);
-                if ($source_path === $destination_path) {
-                    $issues[] = $this->issue('error', 'redirect_loop', $line, 'Source and destination resolve to the same path.');
+                $source_key = RedirectRepository::comparison_key($source);
+                $destination_key = RedirectRepository::comparison_key($destination);
+                if ($source_key !== '' && $source_key === $destination_key) {
+                    $issues[] = $this->issue('error', 'redirect_loop', $line, 'Source and destination resolve to the same URL.');
                 }
             }
 
@@ -85,6 +85,7 @@ final class RedirectValidator
     {
         $issues = [];
         $sources = [];
+        $sources_by_key = [];
         $destinations = [];
         $semantic_sources = [];
         $home_rows = [];
@@ -92,21 +93,24 @@ final class RedirectValidator
         foreach ($rows as $row) {
             $line = (int) $row['_line'];
             $source = RedirectRepository::normalize_path((string) $row['source']);
+            $source_key = RedirectRepository::comparison_key((string) $row['source']);
             $destination = RedirectRepository::normalize_destination((string) $row['destination']);
-            $destination_path = RedirectRepository::normalize_path($destination);
             if (isset($sources[$source])) {
                 $issues[] = $this->issue('error', 'duplicate_source', $line, sprintf('Duplicate source; first defined on row %d.', $sources[$source]));
             } else {
                 $sources[$source] = $line;
             }
+            if ($source_key !== '') {
+                $sources_by_key[$source_key] = $line;
+            }
             $destinations[$destination][] = $line;
-            $semantic = preg_replace('#\.html$#', '', rtrim($source, '/')) ?: '/';
+            $semantic = preg_replace('#\.html$#', '', rtrim($source_key, '/')) ?: '/';
             if (isset($semantic_sources[$semantic]) && $semantic_sources[$semantic]['path'] !== $source) {
                 $issues[] = $this->issue('warning', 'html_trailing_conflict', $line, sprintf('.html/trailing-slash conflict with row %d.', $semantic_sources[$semantic]['line']));
             } else {
                 $semantic_sources[$semantic] = ['line' => $line, 'path' => $source];
             }
-            if ($destination_path === RedirectRepository::normalize_path(home_url('/'))) {
+            if (RedirectRepository::comparison_key($destination) === RedirectRepository::comparison_key(home_url('/'))) {
                 $home_rows[] = $line;
             }
         }
@@ -121,22 +125,22 @@ final class RedirectValidator
 
         foreach ($rows as $row) {
             $line = (int) $row['_line'];
-            $source = RedirectRepository::normalize_path((string) $row['source']);
-            $destination = RedirectRepository::normalize_path((string) $row['destination']);
-            if (isset($sources[$destination]) && $destination !== $source) {
-                $next_row = $sources[$destination];
+            $source = RedirectRepository::comparison_key((string) $row['source']);
+            $destination = RedirectRepository::comparison_key((string) $row['destination']);
+            if (isset($sources_by_key[$destination]) && $destination !== $source) {
+                $next_row = $sources_by_key[$destination];
                 $next = $rows[array_search($next_row, array_column($rows, '_line'), true)] ?? null;
-                $is_loop = is_array($next) && RedirectRepository::normalize_path((string) $next['destination']) === $source;
+                $is_loop = is_array($next) && RedirectRepository::comparison_key((string) $next['destination']) === $source;
                 $issues[] = $this->issue('error', $is_loop ? 'redirect_loop' : 'redirect_chain', $line, $is_loop ? sprintf('Two-way loop with row %d.', $next_row) : sprintf('Destination is itself a source on row %d; collapse to the final URL.', $next_row));
             }
         }
 
         $graph = [];
         foreach ($rows as $row) {
-            $graph[RedirectRepository::normalize_path((string) $row['source'])] = RedirectRepository::normalize_path((string) $row['destination']);
+            $graph[RedirectRepository::comparison_key((string) $row['source'])] = RedirectRepository::comparison_key((string) $row['destination']);
         }
         foreach ($rows as $row) {
-            $origin = RedirectRepository::normalize_path((string) $row['source']);
+            $origin = RedirectRepository::comparison_key((string) $row['source']);
             $cursor = $origin;
             $visited = [];
             while (isset($graph[$cursor])) {

@@ -1,0 +1,4 @@
+source,destination,status
+/service/,https://example.com/service/,301
+/legacy/,https://example.com/final/,301
+/final/,/current-final/,301

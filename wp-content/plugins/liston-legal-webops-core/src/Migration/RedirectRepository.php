@@ -100,4 +100,35 @@ final class RedirectRepository
         }
         return esc_url_raw($destination, ['http', 'https']);
     }
+
+    /**
+     * Build a comparison key without discarding an absolute URL's origin.
+     *
+     * Relative paths belong to this WordPress installation. Absolute URLs
+     * retain their scheme, host, and port so a brand migration to the same
+     * path on another domain is never mistaken for a self-redirect.
+     */
+    public static function comparison_key(string $url): string
+    {
+        $url = trim($url);
+        if ($url === '') {
+            return '';
+        }
+        if (str_starts_with($url, '/')) {
+            $url = home_url(self::normalize_path($url));
+        }
+
+        $scheme = strtolower((string) wp_parse_url($url, PHP_URL_SCHEME));
+        $host   = strtolower((string) wp_parse_url($url, PHP_URL_HOST));
+        $port   = wp_parse_url($url, PHP_URL_PORT);
+        if (! in_array($scheme, ['http', 'https'], true) || $host === '') {
+            return '';
+        }
+        if (($scheme === 'http' && $port === 80) || ($scheme === 'https' && $port === 443)) {
+            $port = null;
+        }
+
+        $origin = $scheme . '://' . $host . ($port ? ':' . $port : '');
+        return $origin . self::normalize_path((string) wp_parse_url($url, PHP_URL_PATH));
+    }
 }

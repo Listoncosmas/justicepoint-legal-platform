@@ -31,12 +31,34 @@ final class RedirectManager
         if (! $redirect) {
             return;
         }
-        $destination = (string) $redirect['destination_url'];
-        if (RedirectRepository::normalize_path($destination) === $path) {
+        $destination = RedirectRepository::normalize_destination((string) $redirect['destination_url']);
+        if ($destination === '' || ! wp_http_validate_url($destination)) {
+            return;
+        }
+        $source_key = RedirectRepository::comparison_key($path);
+        if ($source_key !== '' && $source_key === RedirectRepository::comparison_key($destination)) {
+            return;
+        }
+
+        $destination_host = strtolower((string) wp_parse_url($destination, PHP_URL_HOST));
+        $home_host = strtolower((string) wp_parse_url(home_url('/'), PHP_URL_HOST));
+        $allow_destination_host = null;
+        if ($destination_host !== '' && $destination_host !== $home_host) {
+            $allow_destination_host = static function (array $hosts) use ($destination_host): array {
+                $hosts[] = $destination_host;
+                return array_values(array_unique($hosts));
+            };
+            add_filter('allowed_redirect_hosts', $allow_destination_host);
+        }
+
+        $redirected = wp_safe_redirect($destination, (int) $redirect['status_code'], 'JusticePoint Redirect Manager');
+        if ($allow_destination_host) {
+            remove_filter('allowed_redirect_hosts', $allow_destination_host);
+        }
+        if (! $redirected) {
             return;
         }
         $this->repository->increment_hits((int) $redirect['id']);
-        wp_safe_redirect($destination, (int) $redirect['status_code'], 'JusticePoint Redirect Manager');
         exit;
     }
 

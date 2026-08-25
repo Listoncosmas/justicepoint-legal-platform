@@ -1086,6 +1086,18 @@ body.jp-site .jp-context-cta--accent h2,
   text-transform: uppercase;
 }
 
+.jp-elementor-proof {
+  padding-top: clamp(38px, 5vw, 76px);
+}
+
+.jp-elementor-proof .elementor-widget-heading {
+  margin-bottom: clamp(20px, 2.5vw, 36px);
+}
+
+.jp-elementor-proof .elementor-widget-jp-related-practices {
+  margin-bottom: clamp(42px, 6vw, 82px);
+}
+
 .jp-office-archive {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -1,10 +1,32 @@
 # JusticePoint Legal Platform
 
+[![JusticePoint CI](https://github.com/Listoncosmas/justicepoint-legal-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Listoncosmas/justicepoint-legal-platform/actions/workflows/ci.yml)
+
 JusticePoint Legal Platform is a production-style WordPress portfolio demonstration for a fictional multi-location employment law firm. It solves a real publishing problem: one legal service may need a central practice guide, several office profiles, and dozens of useful local pages without copying layouts or letting SEO-critical data drift.
 
-Live demonstration: `https://justicepoint.crmpl.us/` (publicly reachable, intentionally `noindex,nofollow` because every identity and legal detail is fictional).
+**Live demonstration:** [https://justicepoint.crmpl.us/](https://justicepoint.crmpl.us/) — publicly reachable without a password and intentionally `noindex,nofollow` because every identity and legal detail is fictional.
+
+[![JusticePoint Employment Law desktop homepage](docs/screenshots/production-home-desktop.png)](https://justicepoint.crmpl.us/)
 
 The public-facing firm, attorneys, addresses, telephone numbers, schools, content, and imagery are fictional. The site is not a law firm, does not offer legal advice, and is deliberately protected with `noindex,nofollow` in local/demo environments.
+
+## Review this project in five minutes
+
+1. Open the [live homepage](https://justicepoint.crmpl.us/) and one [dynamic service-area page](https://justicepoint.crmpl.us/local-employment-law/wrongful-termination-los-angeles/).
+2. Filter the accessible [office directory and MapLibre map](https://justicepoint.crmpl.us/office-directory/?city=los-angeles).
+3. Inspect the server-rendered canonical, Open Graph metadata, robots directives, and JSON-LD.
+4. Review the [plugin architecture](docs/architecture.md), [migration strategy](docs/migration-plan.md), and [production evidence](docs/performance.md).
+5. Open the latest [JusticePoint CI run](https://github.com/Listoncosmas/justicepoint-legal-platform/actions/workflows/ci.yml) and the focused tests in [`tests/`](wp-content/plugins/liston-legal-webops-core/tests/).
+
+| Requirement | Implementation | Primary source |
+|---|---|---|
+| Scalable legal content | Five programmatic post types, four taxonomies, ACF Local JSON, typed meta, and duplicate practice/office prevention | [`Content/`](wp-content/plugins/liston-legal-webops-core/src/Content/) |
+| The7 + Elementor | The7 child theme, dynamic service template, and four server-rendered `Widget_Base` widgets in “Legal WebOps” | [`Elementor/`](wp-content/plugins/liston-legal-webops-core/src/Elementor/) · [`dynamic-service-area.json`](wp-content/themes/the7-justicepoint-child/elementor-templates/dynamic-service-area.json) |
+| Technical SEO | Canonicals, metadata, Open Graph, robots, sitemaps, breadcrumbs, and evidence-based JSON-LD | [`TechnicalSEO.php`](wp-content/plugins/liston-legal-webops-core/src/SEO/TechnicalSEO.php) |
+| Brand/URL migrations | Host-aware loop and chain validation, one-hop runtime redirects, CSV validation/import, and Nginx/Apache exports | [`Migration/`](wp-content/plugins/liston-legal-webops-core/src/Migration/) |
+| Directory + REST | Accessible GET filters, server-rendered office list, cached validated REST endpoint, and conditional MapLibre | [`OfficeDirectoryController.php`](wp-content/plugins/liston-legal-webops-core/src/REST/OfficeDirectoryController.php) |
+| CRM + analytics | Nonce, honeypot, rate limit, validation, environment-only webhook, retries, safe logs, and PII-free success event | [`Integrations/`](wp-content/plugins/liston-legal-webops-core/src/Integrations/) |
+| WebOps + quality | Oracle/Nginx/PHP-FPM deployment, FastCGI cache, cron/backups, WP-CLI seed, PHPUnit, WPCS, frontend linting, and CI | [`ops/`](ops/) · [`ci.yml`](.github/workflows/ci.yml) |
 
 ## The outcome
 
@@ -29,7 +51,7 @@ The implementation includes:
 
 The brief represents an established commercial WordPress stack, not a greenfield theme exercise. Replacing The7 and Elementor would avoid the integration work the sample is meant to demonstrate. The7 remains the installed parent and Elementor Pro remains available to editors for Theme Builder and landing-page composition. The child theme owns the design language and template hierarchy without modifying The7.
 
-Elementor is a presentation tool here, not the database. The dynamic service-area Theme Builder record delegates to a shared child-theme partial, and custom widgets query structured WordPress records server-side. Source data stays portable even if the builder changes.
+Elementor is a presentation tool here, not the database. The dynamic service-area Theme Builder record combines a shared child-theme partial with the Contextual Consultation CTA and Related Practice Areas widgets placed directly in the template. Every component queries structured WordPress records server-side, so source data stays portable even if the builder changes.
 
 ## Why business logic lives in a plugin
 
@@ -84,7 +106,7 @@ The plugin registers the `Legal WebOps` category and four original widgets:
 - **Office Directory and Map** uses accessible GET controls, shareable filtered URLs, cached REST responses, an accessible server list, and a conditionally loaded MapLibre bundle.
 - **Attorney Grid** resolves the current practice/office/service assignment without manual per-page selection and emits responsive WordPress images.
 
-Widgets declare `get_style_depends()` and `get_script_depends()`. The ~285 KB gzip MapLibre bundle is absent from pages without the map. Importable references live in [elementor-templates](/wp-content/themes/the7-justicepoint-child/elementor-templates).
+Widgets declare `get_style_depends()` and `get_script_depends()`. The ~285 KB gzip MapLibre bundle is absent from pages without the map. Importable references live in [elementor-templates](wp-content/themes/the7-justicepoint-child/elementor-templates/).
 
 ## Technical SEO decisions
 
@@ -119,7 +141,7 @@ wp liston-webops redirects export-nginx redirects.csv
 wp liston-webops redirects export-apache redirects.csv
 ```
 
-Validation detects duplicate sources, shared destinations requiring review, arbitrary loops, chains, missing destinations, malformed URLs, HTTP/HTTPS inconsistencies, `.html`/slash conflicts, unsafe homepage consolidation, and non-200 destinations. Imported paths are normalized for both root and subdirectory WordPress installations. The tested sample resolves in exactly one 301 to a 200 destination.
+Validation detects duplicate sources, shared destinations requiring review, arbitrary loops, chains, missing destinations, malformed URLs, HTTP/HTTPS inconsistencies, `.html`/slash conflicts, unsafe homepage consolidation, and non-200 destinations. Imported paths are normalized for both root and subdirectory WordPress installations. Loop and chain comparison keys retain the scheme, host, and effective port, so a same-path redirect to a new brand domain is correctly treated as external—not as a self-loop. Runtime redirects temporarily allow only the validated destination host. The tested sample resolves in exactly one 301 to a 200 destination.
 
 Full process: [migration-plan.md](docs/migration-plan.md).
 
@@ -202,7 +224,7 @@ wp liston-webops seed
 wp liston-webops redirects validate tests/fixtures/redirects.csv
 ```
 
-The completed run passed 14 PHPUnit tests / 52 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
+The completed run passed 18 PHPUnit tests / 63 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
 
 ## Repository map
 
