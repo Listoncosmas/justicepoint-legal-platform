@@ -199,7 +199,7 @@ wp liston-webops seed
 wp liston-webops redirects validate tests/fixtures/redirects.csv
 ```
 
-The local completed run passed 12 PHPUnit tests / 44 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
+The local completed run passed 12 PHPUnit tests / 45 assertions, WPCS, ESLint, Stylelint, Prettier, ACF JSON validation, both Vite production builds, all redirect commands, REST validation, live redirect one-hop verification, and browser desktop/mobile checks.
 
 ## Repository map
 
